@@ -1,11 +1,25 @@
-import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
-import { useState } from "react";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TextInput,
+    Pressable,
+    Alert,
+} from "react-native";
+import { useState, useRef } from "react";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import { firebaseConfig } from "../config";
+import firebase from "firebase/compat/app";
 import Logo from "../components/Logo";
+
 const PhoneNumberVerify = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [code, setCode] = useState("");
+    const [verificationId, setVerificationId] = useState(null);
+    const recaptchaVerifier = useRef(null);
     let phoneNumberLength;
+
     const onChangeTextHandler = (text) => {
-        //console.log(text.replace(/[^\d]/g, ""));
         const phoneNumber = text.replace(/[^\d]/g, "");
         phoneNumberLength = phoneNumber.length;
         if (phoneNumberLength < 3) {
@@ -30,8 +44,42 @@ const PhoneNumberVerify = () => {
             );
         }
     };
+
+    const sendVerification = () => {
+        const phoneProvider = new firebase.auth.PhoneAuthProvider();
+
+        phoneProvider
+            .verifyPhoneNumber(
+                `+998${phoneNumber.replace(/[^\d]/g, "")}`,
+                recaptchaVerifier.current
+            )
+            .then(setVerificationId);
+        setPhoneNumber("");
+    };
+
+    const confirmCode = () => {
+        const credential = firebase.auth.PhoneAuthProvider.credential(
+            verificationId,
+            code
+        );
+        firebase
+            .auth()
+            .signInWithCredential(credential)
+            .then(() => {
+                setCode("");
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+        Alert.alert("Logged in successfully");
+    };
+
     return (
         <View style={styles.container}>
+            <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
+            />
             <Logo />
             <Text style={{ margin: 6 }}>Login with your phone number</Text>
             <View style={styles.phoneInputContainer}>
@@ -47,7 +95,7 @@ const PhoneNumberVerify = () => {
             </View>
 
             <Pressable
-                onPress={()=>{console.log("Number sent")}}
+                onPress={sendVerification}
                 style={[
                     styles.sendCodeButton,
                     {
@@ -56,12 +104,22 @@ const PhoneNumberVerify = () => {
                     },
                 ]}
             >
-                <Text style={styles.sendCodeText}>Send code</Text>
+                <Text style={styles.sendCodeText}>Send verification</Text>
+            </Pressable>
+            <TextInput
+                placeholder="Confirm code"
+                onChangeText={setCode}
+                keyboardType="phone-pad"
+                value={code}
+            />
+            <Pressable onPress={confirmCode}>
+                <Text>Confirm verification</Text>
             </Pressable>
         </View>
     );
 };
 
+export default PhoneNumberVerify;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -101,4 +159,3 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
-export default PhoneNumberVerify;
