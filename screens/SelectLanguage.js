@@ -1,14 +1,11 @@
 import { Text, View, StyleSheet, Image } from "react-native";
 import SelectLanguageButton from "../components/SelectLanguageButton";
+import Logo from "../components/Logo";
 
 const SelectLanguage = () => {
     return (
         <View style={styles.container}>
-            <Image
-                style={styles.image}
-                source={require("../images/logo-white.png")}
-            />
-
+            <Logo />
             <SelectLanguageButton language="Русский" />
             <SelectLanguageButton language="English" />
             <SelectLanguageButton language="O'zbekcha" />
@@ -21,14 +18,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#F8F8FF",
         alignItems: "center",
         justifyContent: "center",
-    },
-    image: {
-        width: "50%",
-        height: "40%",
-    },
-    text: {
-        borderWidth: 1,
-        borderColor: "green",
     },
 });
 export default SelectLanguage;
