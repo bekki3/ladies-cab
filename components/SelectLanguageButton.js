@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, Text } from "react-native"
-const SelectLanguageButton = ({language}) =>{
+const SelectLanguageButton = ({language, onPress}) =>{
 
     return (
-        <Pressable onPress={()=>{console.log(`Selected: ${language}`);}} style={styles.button}>
+        <Pressable onPress={onPress} style={styles.button}>
             <Text style={styles.text}>{language}</Text>
         </Pressable>
     )

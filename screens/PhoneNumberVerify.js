@@ -12,11 +12,10 @@ import { firebaseConfig } from "../config";
 import firebase from "firebase/compat/app";
 import Logo from "../components/Logo";
 
-const PhoneNumberVerify = () => {
+const PhoneNumberVerify = ({ navigation }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [code, setCode] = useState("");
-    const [verificationId, setVerificationId] = useState(null);
     const recaptchaVerifier = useRef(null);
+
     let phoneNumberLength;
 
     const onChangeTextHandler = (text) => {
@@ -47,17 +46,29 @@ const PhoneNumberVerify = () => {
 
     const sendVerification = () => {
         const phoneProvider = new firebase.auth.PhoneAuthProvider();
-
         phoneProvider
             .verifyPhoneNumber(
                 `+998${phoneNumber.replace(/[^\d]/g, "")}`,
                 recaptchaVerifier.current
             )
-            .then(setVerificationId);
+            .then((verId)=>{
+                console.log("verificatrion id: ", verId);
+                navigation.navigate("codeVerify", {
+                    confirmCode: confirmCode,
+                    verificationId: verId
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+                
         setPhoneNumber("");
+        
     };
 
-    const confirmCode = () => {
+    const confirmCode = (verificationId, code) => {
+        console.log("verification: ", verificationId);
+        console.log("code: ", code);
         const credential = firebase.auth.PhoneAuthProvider.credential(
             verificationId,
             code
@@ -66,12 +77,15 @@ const PhoneNumberVerify = () => {
             .auth()
             .signInWithCredential(credential)
             .then(() => {
-                setCode("");
+                //setCode("");
+                Alert.alert("Logged in successfully");
+                //navigation.navigate("");
             })
             .catch((err) => {
                 console.error(err);
+                Alert.alert("Log in error");
             });
-        Alert.alert("Logged in successfully");
+        
     };
 
     return (
@@ -105,15 +119,6 @@ const PhoneNumberVerify = () => {
                 ]}
             >
                 <Text style={styles.sendCodeText}>Send verification</Text>
-            </Pressable>
-            <TextInput
-                placeholder="Confirm code"
-                onChangeText={setCode}
-                keyboardType="phone-pad"
-                value={code}
-            />
-            <Pressable onPress={confirmCode}>
-                <Text>Confirm verification</Text>
             </Pressable>
         </View>
     );
