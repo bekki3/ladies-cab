@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SelectLanguage from "./screens/SelectLanguage";
 import PhoneNumberVerify from "./screens/PhoneNumberVerify";
 import CodeVerify from "./screens/CodeVerify";
+import SignUp from "./screens/SignUp";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -13,10 +15,11 @@ export default function App() {
     return (
        
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="codeVerify" screenOptions={{headerStyle: {backgroundColor: "#F8F8FF"}}}>
+                <Stack.Navigator initialRouteName="selectLanguage" screenOptions={{headerStyle: {backgroundColor: "#F8F8FF"}}}>
                     <Stack.Screen name="selectLanguage" component={SelectLanguage} options={{title: "Select Language"}}/>
                     <Stack.Screen name="phoneNumberVerify" component={PhoneNumberVerify} options={{title: "Login"}} />
                     <Stack.Screen name="codeVerify" component={CodeVerify} options={{title: "Verify Code"}} />
+                    <Stack.Screen name="signUp" component={SignUp} options={{title: "Sign Up"}} />
                 </Stack.Navigator>
             </NavigationContainer>
     );

@@ -1,5 +1,9 @@
-import { Text, View, StyleSheet, TextInput, Button } from "react-native";
+import { Text, View, StyleSheet, TextInput, Button, Pressable } from "react-native";
 import { useState } from "react";
+import PrimaryButton from "../components/PrimaryButton";
+
+
+
 const CodeVerify = ({ navigation, route }) => {
     const [code, setCode] = useState("");
     //console.log(route);
@@ -7,23 +11,30 @@ const CodeVerify = ({ navigation, route }) => {
     return (
         <View style={sytles.container}>
             <Text style={sytles.primaryText}>Enter verification code</Text>
-            <Text style={sytles.text}>A code has been sent to +998123456789</Text>
+            <Text style={sytles.text}>
+                A code has been sent to {params.stdPhoneNumber}
+            </Text>
             <TextInput
                 style={sytles.textInput}
                 onChangeText={setCode}
-                placeholder="xxxxxx"
+                placeholder="Enter the code"
+                keyboardType="phone-pad"
             />
-            <Text>Didn't receive a code?</Text>
-            <Button
-                title="resend"
+            <View style={sytles.resendView}>
+                <Text style={sytles.resendText}>Didn't receive a code?</Text>
+                <Pressable
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                    style={sytles.resendButton}
+                >
+                    <Text style={sytles.resendButtonText}>Resend</Text>
+                </Pressable>
+            </View>
+
+            <PrimaryButton
+                text={"Verify Now"}
                 onPress={() => {
-                    navigation.goBack();
-                }}
-            />
-            <Button
-                title="Verify Now"
-                onPress={() => {
-                    //navigation.navigate("phoneNumberVerify");                    
                     params.confirmCode(params.verificationId, code);
                 }}
             />
@@ -44,12 +55,32 @@ const sytles = StyleSheet.create({
         margin: 10
     },
     text: {
-        
+        opacity: 0.4,
+        margin: 10
     },
     textInput: {
+        width: "60%",
+        fontSize: 24,
         borderBottomWidth: 3,
         borderBottomColor: "#ccc",
+        margin: 20,
+        textAlign: "center"
     },
+    resendView: {
+        flexDirection: "row",
+        margin: 10,
+        alignItems: "center",
+    },
+    resendText: {
+        margin: 2,
+    },
+    resendButton: {
+        margin: 2,
+    },
+    resendButtonText: {
+        fontWeight: "bold",
+        color: "blue"
+    }
 });
 
 export default CodeVerify;

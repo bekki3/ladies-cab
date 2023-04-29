@@ -45,17 +45,19 @@ const PhoneNumberVerify = ({ navigation }) => {
     };
 
     const sendVerification = () => {
+        const stdPhoneNumber = `+998${phoneNumber.replace(/[^\d]/g, "")}`
         const phoneProvider = new firebase.auth.PhoneAuthProvider();
         phoneProvider
             .verifyPhoneNumber(
-                `+998${phoneNumber.replace(/[^\d]/g, "")}`,
+                stdPhoneNumber ,
                 recaptchaVerifier.current
             )
             .then((verId)=>{
-                console.log("verificatrion id: ", verId);
+                //console.log("verificatrion id: ", verId);
                 navigation.navigate("codeVerify", {
                     confirmCode: confirmCode,
-                    verificationId: verId
+                    verificationId: verId,
+                    stdPhoneNumber: stdPhoneNumber
                 });
             })
             .catch((err) => {
@@ -78,8 +80,9 @@ const PhoneNumberVerify = ({ navigation }) => {
             .signInWithCredential(credential)
             .then(() => {
                 //setCode("");
-                Alert.alert("Logged in successfully");
+                //Alert.alert("Logged in successfully");
                 //navigation.navigate("");
+                navigation.navigate("signUp");
             })
             .catch((err) => {
                 console.error(err);
@@ -152,7 +155,6 @@ const styles = StyleSheet.create({
     },
     sendCodeButton: {
         justifyContent: "center",
-
         borderRadius: 50,
         width: "80%",
         height: 46,
