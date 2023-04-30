@@ -15,7 +15,7 @@ export default function App() {
     return (
        
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="selectLanguage" screenOptions={{headerStyle: {backgroundColor: "#F8F8FF"}}}>
+                <Stack.Navigator initialRouteName="signUp" screenOptions={{headerStyle: {backgroundColor: "#F8F8FF"}}}>
                     <Stack.Screen name="selectLanguage" component={SelectLanguage} options={{title: "Select Language"}}/>
                     <Stack.Screen name="phoneNumberVerify" component={PhoneNumberVerify} options={{title: "Login"}} />
                     <Stack.Screen name="codeVerify" component={CodeVerify} options={{title: "Verify Code"}} />
