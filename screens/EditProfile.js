@@ -1,20 +1,12 @@
-import {
-    Text,
-    View,
-    StyleSheet,
-    TextInput,
-    Pressable,
-    Alert,
-} from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable, Alert } from "react-native";
 import { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import ProfileIcon from "../components/ProfileIcon";
-
-const SignUp = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [age, setAge] = useState("");
-    const phoneNumber = "+99897";
+const EditProfile = () => {
+    const [firstName, setFirstName] = useState("John");
+    const [lastName, setLastName] = useState("Doe");
+    const [age, setAge] = useState("18");
+    const phoneNumber = "123";
 
     const validateInputs = () => {
         const letters = /^[A-Za-z]+$/;
@@ -39,7 +31,8 @@ const SignUp = () => {
         return false;
     };
 
-    const sendData = async () => {
+
+const updateData = async () => {
         if (validateInputs()) {
             const dataToSend = {
                 firstName: firstName,
@@ -49,7 +42,7 @@ const SignUp = () => {
                 phoneNumber: phoneNumber,
             };
             
-            const response = await fetch("http://10.0.2.2:3000/newUser", {
+            const response = await fetch("http://10.0.2.2:3000/editUser", {
                 method: "POST",
                 body: JSON.stringify(dataToSend),
                 headers: { "Content-Type": "application/json" },
@@ -60,6 +53,7 @@ const SignUp = () => {
         }
     };
 
+
     return (
         <View style={styles.container}>
             <Pressable
@@ -69,39 +63,46 @@ const SignUp = () => {
             >
                 <ProfileIcon />
             </Pressable>
+
             <Pressable
                 onPress={() => {
                     console.log("Pick image");
                 }}
             >
-                <Text style={styles.text}>Add profile picture</Text>
+                <Text style={styles.text}>Update profile picture</Text>
             </Pressable>
+
+            
             <View style={styles.form}>
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={setFirstName}
-                    value={firstName}
-                    placeholder="First name"
-                />
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={setLastName}
-                    placeholder="Last name"
-                />
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={setAge}
-                    placeholder="Age"
-                    keyboardType="numeric"
-                />
+                <Text style={styles.title}>First name:</Text>
+                <TextInput style={styles.textInput} onChangeText={setFirstName} value={firstName} onPressIn={()=> {setFirstName("")}}/>
+            
+                <Text style={styles.title}>Last name:</Text>
+                <TextInput style={styles.textInput} onChangeText={setLastName} value={lastName} onPressIn={()=> {setLastName("")}}/>
+            
+                <Text style={styles.title}>Age:</Text>
+                <TextInput style={styles.textInput} onChangeText={setAge} value={age} onPressIn={()=> {setAge("")}}/>
             </View>
 
-            <PrimaryButton text={"Sign Up"} onPress={sendData} />
+
+            <PrimaryButton
+                onPress={updateData}
+                text="Update profile"
+            />
         </View>
     );
 };
 
-export default SignUp;
+
+
+
+
+
+
+
+
+
+export default EditProfile;
 
 const styles = StyleSheet.create({
     container: {
@@ -114,18 +115,15 @@ const styles = StyleSheet.create({
         color: "blue",
     },
     form: {
-        width: "100%",
-        alignItems: "center",
-        marginVertical: "15%",
+        marginVertical: 20,
+        width: "70%"
+    },
+    title: {
+        color: "#777"
     },
     textInput: {
-        backgroundColor: "#fff",
-        borderWidth: 1,
-        borderColor: "#CCC",
-        borderRadius: 50,
-        width: "70%",
-        height: 46,
-        margin: 10,
-        paddingLeft: 20,
-    },
+        borderBottomWidth: 1,
+        borderBottomColor: "#777",
+        marginBottom: 20
+    }
 });

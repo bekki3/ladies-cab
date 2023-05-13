@@ -7,6 +7,7 @@ import SelectLanguage from "./screens/SelectLanguage";
 import PhoneNumberVerify from "./screens/PhoneNumberVerify";
 import CodeVerify from "./screens/CodeVerify";
 import SignUp from "./screens/SignUp";
+import EditProfile from "./screens/EditProfile";
 
 
 const Stack = createNativeStackNavigator();
@@ -15,11 +16,12 @@ export default function App() {
     return (
        
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="signUp" screenOptions={{headerStyle: {backgroundColor: "#F8F8FF"}}}>
+                <Stack.Navigator initialRouteName="editProfile" screenOptions={{headerStyle: {backgroundColor: "#F8F8FF"}}}>
                     <Stack.Screen name="selectLanguage" component={SelectLanguage} options={{title: "Select Language"}}/>
                     <Stack.Screen name="phoneNumberVerify" component={PhoneNumberVerify} options={{title: "Login"}} />
                     <Stack.Screen name="codeVerify" component={CodeVerify} options={{title: "Verify Code"}} />
                     <Stack.Screen name="signUp" component={SignUp} options={{title: "Sign Up"}} />
+                    <Stack.Screen name="editProfile" component={EditProfile} options={{title: "Edit Profile"}} />
                 </Stack.Navigator>
             </NavigationContainer>
     );
