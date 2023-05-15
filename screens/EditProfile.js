@@ -2,11 +2,13 @@ import { View, Text, TextInput, StyleSheet, Pressable, Alert } from "react-nativ
 import { useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import ProfileIcon from "../components/ProfileIcon";
+
+
 const EditProfile = () => {
     const [firstName, setFirstName] = useState("John");
     const [lastName, setLastName] = useState("Doe");
     const [age, setAge] = useState("18");
-    const phoneNumber = "123";
+    const phoneNumber = "+99897";
 
     const validateInputs = () => {
         const letters = /^[A-Za-z]+$/;
@@ -42,8 +44,8 @@ const updateData = async () => {
                 phoneNumber: phoneNumber,
             };
             
-            const response = await fetch("http://10.0.2.2:3000/editUser", {
-                method: "POST",
+            const response = await fetch(`http://10.0.2.2:3000/user`, {
+                method: "PUT",
                 body: JSON.stringify(dataToSend),
                 headers: { "Content-Type": "application/json" },
             });

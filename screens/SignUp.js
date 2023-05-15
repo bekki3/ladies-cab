@@ -49,7 +49,7 @@ const SignUp = () => {
                 phoneNumber: phoneNumber,
             };
             
-            const response = await fetch("http://10.0.2.2:3000/newUser", {
+            const response = await fetch("http://10.0.2.2:3000/user", {
                 method: "POST",
                 body: JSON.stringify(dataToSend),
                 headers: { "Content-Type": "application/json" },
